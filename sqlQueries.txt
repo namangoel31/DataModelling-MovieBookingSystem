@@ -1,0 +1,73 @@
+
+-- create
+CREATE TABLE MOVIE (
+  movieId int PRIMARY KEY,
+  name varchar(128)
+);
+
+CREATE TABLE THEATRE(
+  theaterId int PRIMARY KEY,
+  name varchar(128),
+  location varchar(128)
+);
+
+CREATE TABLE SHOWS(
+  showID int PRIMARY KEY,
+  showDate Date,
+  showTime timestamp,
+  quality varchar(128),
+  language varchar(128),
+  sound varchar(128),
+  movieId int,
+  theaterId int,
+  foreign key (movieId) references MOVIE(movieId),
+  foreign key (theaterId) references THEATRE(theaterId)
+);
+
+-- Insert sample movies
+INSERT INTO MOVIE (movieId, name) VALUES
+(1, 'Inception'),
+(2, 'The Matrix'),
+(3, 'Interstellar');
+
+-- Insert sample theaters
+INSERT INTO THEATRE (theaterId, name, location) VALUES
+(1, 'PVR Cinemas', 'Downtown'),
+(2, 'INOX', 'City Mall'),
+(3, 'Carnival Cinemas', 'Suburb');
+
+-- Insert sample shows
+INSERT INTO SHOWS (showID, showDate, showTime, quality, language, sound, movieId, theaterId) VALUES
+(1, '2025-06-01', '2025-06-01 18:30:00', 'HD', 'English', 'Dolby', 1, 1),
+(2, '2025-06-01', '2025-06-01 21:00:00', '4K', 'English', 'Dolby', 2, 1),
+(3, '2025-06-05', '2025-06-05 15:00:00', 'HD', 'Hindi', 'DTS', 1, 1),
+(4, '2025-06-03', '2025-06-03 17:45:00', '4K', 'English', 'Dolby', 3, 3),
+(5, '2025-06-05', '2025-06-05 14:00:00', 'HD', 'English', 'Dolby', 1, 1),
+(6, '2025-06-05', '2025-06-05 18:00:00', 'HD', 'English', 'Dolby', 2, 1),
+(7, '2025-06-06', '2025-06-06 12:00:00', '4K', 'English', 'Dolby', 1, 1),
+(8, '2025-06-06', '2025-06-06 20:00:00', '4K', 'English', 'Dolby', 1, 1),
+(9, '2025-06-07', '2025-06-07 15:30:00', 'HD', 'English', 'Dolby', 1, 1),
+(10, '2025-06-05', '2025-06-05 10:00:00', 'HD', 'English', 'Dolby', 1, 1),
+(11, '2025-06-05', '2025-06-05 13:00:00', 'HD', 'English', 'Dolby', 2, 1),
+(12, '2025-06-05', '2025-06-05 15:30:00', '4K', 'English', 'Dolby', 1, 1),
+(13, '2025-06-06', '2025-06-06 21:00:00', '4K', 'English', 'Dolby', 1, 1),
+(14, '2025-06-07', '2025-06-07 16:45:00', 'HD', 'English', 'Dolby', 1, 1);
+
+SELECT * FROM MOVIE;
+
+SELECT * FROM THEATRE;
+
+SELECT * FROM SHOWS;
+
+SELECT
+  s.showDate,
+  s.showTime,
+  s.quality,
+  s.language,
+  s.sound,
+  m.name AS movieName,
+  t.name AS theaterName
+FROM SHOWS s
+INNER JOIN MOVIE m ON s.movieId = m.movieId
+INNER JOIN THEATRE t ON s.theaterId = t.theaterId WHERE t.name = 'PVR CINEMAS' and s.showDate = '2025-06-05'
+ORDER BY m.name;
